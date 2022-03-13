@@ -1,10 +1,15 @@
 import urllib.request
 import tempfile
 from pathlib import Path
+import zipfile
 
 GRADE_URL = 'https://www.ics.uci.edu/~pattis/ICS-33/ics33win22grades.zip'
 
 def download_grades() -> Path:
+    '''
+    Downloads grades as a zipped file.
+    Returns path to grades.
+    '''
     request = urllib.request.Request(GRADE_URL)
     response = urllib.request.urlopen(request)
     grades = response.read()
@@ -14,6 +19,15 @@ def download_grades() -> Path:
         f.write(grades)
     return grades_path
 
+def unzip_grades(path: Path) -> Path:
+    '''
+    Unzips grades.
+    Returns path to xlsm grades file.
+    '''
+    file = zipfile.ZipFile(path)
+    file.extractall(tempfile.gettempdir())
+    return Path(path.parent/file.namelist()[0])
 
 if __name__ == '__main__':
-    print(download_grades())
+    zipped_grades = download_grades()
+    print(unzip_grades(zipped_grades))
