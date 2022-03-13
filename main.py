@@ -1,4 +1,4 @@
-import urllib.request
+import requests
 import tempfile
 from pathlib import Path
 import zipfile
@@ -10,10 +10,7 @@ def download_grades() -> Path:
     Downloads grades as a zipped file.
     Returns path to grades.
     '''
-    request = urllib.request.Request(GRADE_URL)
-    response = urllib.request.urlopen(request)
-    grades = response.read()
-    response.close()
+    grades = requests.get(GRADE_URL)
     grades_path = Path(tempfile.gettempdir())/'grades.zip'
     with open(grades_path, 'wb') as f:
         f.write(grades)
