@@ -7,6 +7,18 @@ from openpyxl import Workbook, load_workbook
 
 GRADE_URL = 'https://www.ics.uci.edu/~pattis/ICS-33/ics33win22grades.zip'
 
+
+def is_saved_id() -> bool:
+    if (Path.cwd() / 'hash.txt').exists():
+        return True
+    return False
+
+
+def save_hash_id(hash_id: str) -> None:
+    with open('hash.txt', 'w') as f:
+        f.write(hash_id)
+
+
 def download_grades() -> Path:
     '''
     Downloads grades as a zipped file.
@@ -41,7 +53,20 @@ def get_row(path: Path, id: int) -> tuple:
             return row
 
 
+def get_hash() -> str:
+    if is_saved_id():
+        with open('hash.txt', 'r') as f:
+            return int(f.readline().strip('\n'))
+    else:
+        print('Please enter your hash id: ')
+        hash_id = input()
+        save_hash_id(hash_id)
+        return int(hash_id)
+
+
 if __name__ == '__main__':
+    hash_id = get_hash()
     zipped_grades = download_grades()
     grades_path = unzip_grades(zipped_grades)
-    print(get_row(grades_path, 901377)[27].value)
+    print(get_row(grades_path, hash_id)[27].value)
+    #901377
