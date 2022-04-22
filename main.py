@@ -5,7 +5,7 @@ import zipfile
 from openpyxl import Workbook, load_workbook
 
 
-GRADE_URL = 'https://www.ics.uci.edu/~pattis/ICS-33/ics33win22grades.zip'
+GRADE_URL = 'https://www.ics.uci.edu/~pattis/ICS-33/ics33spr22grades.zip'
 
 
 def is_saved_id() -> bool:
@@ -69,4 +69,5 @@ if __name__ == '__main__':
     zipped_grades = download_grades()
     grades_path = unzip_grades(zipped_grades)
     print(get_row(grades_path, hash_id)[27].value)
+    x = input("Enter anything to continue")
     #901377
